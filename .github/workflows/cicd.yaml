@@ -35,5 +35,4 @@ jobs:
             cd devops-blue-green
             git pull origin main
             docker compose up -d --build
-            bash switch.sh
           EOF
