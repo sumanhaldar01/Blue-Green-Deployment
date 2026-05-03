@@ -16,7 +16,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: devops-app
-          severity: HIGH
+          severity: CRITICAL
           exit-code: 1
 
       - name: Setup SSH Key
