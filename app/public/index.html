@@ -175,7 +175,7 @@
     <div class="container">
         <header>
             <h1>🚀 DevOps Blue-Green Deployment</h1>
-            <div class="status-badge status-blue">ACTIVE: BLUE</div>
+            <div class="status-badge" id="statusBadge">ACTIVE: LOADING...</div>
             <p class="version-info">Version: 1.0.0</p>
         </header>
         
@@ -194,7 +194,7 @@
             <h2>Deployment Status</h2>
             <div class="status-item">
                 <strong>Current Environment:</strong>
-                <span class="status-value">BLUE</span>
+                <span class="status-value" id="currentEnv">LOADING...</span>
             </div>
             <div class="status-item">
                 <strong>Server Status:</strong>
@@ -215,7 +215,6 @@
         </section>
         
         <section class="action-buttons">
-            <button class="btn-switch" onclick="switchEnvironment()">🔄 Switch to GREEN</button>
             <button class="btn-info" onclick="getStatus()">ℹ️ View Logs</button>
         </section>
         
@@ -226,22 +225,50 @@
     </div>
     
     <script>
-        function switchEnvironment() {
-            alert('Switching deployment from BLUE to GREEN environment...');
-            // API call would go here
-            console.log('Environment switch initiated');
-        }
-        
         function getStatus() {
             alert('Fetching deployment logs and status...');
             // API call would go here
             console.log('Fetching logs');
+        }
+
+        function updateEnvironmentStatus() {
+            fetch('/environment')
+                .then(response => response.json())
+                .then(data => {
+                    const env = data.environment.toUpperCase();
+                    const badge = document.getElementById('statusBadge');
+                    const envDisplay = document.getElementById('currentEnv');
+                    
+                    // Update badge with correct class and text
+                    badge.textContent = `ACTIVE: ${env}`;
+                    badge.className = 'status-badge';
+                    
+                    if (env === 'BLUE') {
+                        badge.classList.add('status-blue');
+                    } else if (env === 'GREEN') {
+                        badge.classList.add('status-green');
+                    }
+                    
+                    // Update current environment display
+                    envDisplay.textContent = env;
+                })
+                .catch(error => {
+                    console.error('Error fetching environment:', error);
+                    document.getElementById('statusBadge').textContent = 'ACTIVE: ERROR';
+                    document.getElementById('currentEnv').textContent = 'ERROR';
+                });
         }
         
         // Update timestamp on page load
         document.addEventListener('DOMContentLoaded', function() {
             const now = new Date();
             document.getElementById('timestamp').textContent = now.toLocaleString();
+            
+            // Fetch and display current environment
+            updateEnvironmentStatus();
+            
+            // Refresh environment status every 5 seconds
+            setInterval(updateEnvironmentStatus, 5000);
         });
     </script>
 </body>

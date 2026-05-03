@@ -6,12 +6,16 @@ services:
     container_name: blue_app
     ports:
       - "3001:3000"
+    environment:
+      - ENVIRONMENT=blue
 
   green:
     build: ./app
     container_name: green_app
     ports:
       - "3002:3000"
+    environment:
+      - ENVIRONMENT=green
 
   nginx:
     image: nginx:latest
