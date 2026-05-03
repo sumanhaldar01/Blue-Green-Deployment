@@ -32,8 +32,8 @@ jobs:
       - name: Deploy to EC2 (Blue-Green)
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd devops-project
+            cd devops-blue-green
             git pull origin main
-            docker-compose up -d --build
+            docker compose up -d --build
             bash switch.sh
           EOF
