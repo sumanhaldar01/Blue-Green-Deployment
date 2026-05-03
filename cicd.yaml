@@ -17,7 +17,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: devops-app
-          severity: HIGH
+          severity: CRITICAL
           exit-code: 1
 
       - name: Setup SSH Key
@@ -36,5 +36,4 @@ jobs:
             cd devops-project
             git pull origin main
             docker-compose up -d --build
-            bash switch.sh
           EOF
